@@ -24,6 +24,7 @@ PID::PID(double* Input, double* Output, double* Setpoint,
     myInput = Input;
     mySetpoint = Setpoint;
     inAuto = false;
+    kerror = 0;
 
     PID::SetOutputLimits(0, 255);				//default output limit corresponds to
 												//the arduino pwm limits
@@ -84,6 +85,10 @@ bool PID::Compute()
 
 	    if(output > outMax) output = outMax;
       else if(output < outMin) output = outMin;
+
+      if (*mySetpoint - kerror <= input &&  input <= *mySetpoint + kerror )
+        output = 0;
+
 	    *myOutput = output;
 
       /*Remember some variables for next time*/
@@ -141,6 +146,11 @@ void PID::SetSampleTime(int NewSampleTime)
       kd /= ratio;
       SampleTime = (unsigned long)NewSampleTime;
    }
+}
+
+void PID::SetAllowableError(double error)
+{
+   kerror = error;
 }
 
 /* SetOutputLimits(...)****************************************************

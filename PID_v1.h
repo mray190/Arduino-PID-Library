@@ -34,6 +34,8 @@ class PID
     void SetOutputLimits(double, double); // * clamps the output to a specific range. 0-255 by default, but
 										                      //   it's likely the user will want to change this depending on
 										                      //   the application
+
+    void SetAllowableError(double);
 	
 
 
@@ -70,6 +72,7 @@ class PID
 	double kp;                  // * (P)roportional Tuning Parameter
     double ki;                  // * (I)ntegral Tuning Parameter
     double kd;                  // * (D)erivative Tuning Parameter
+	double kerror;
 
 	int controllerDirection;
 	int pOn;
